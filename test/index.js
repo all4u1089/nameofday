@@ -76,7 +76,7 @@ describe('Name of day test case', function () {
 		});
 		
 		it('returns Tuesday when year is 2016, month is 9, day is 20', function (done) {
-			nameOfDay.daysInMonth(2016,9,20 function (err, name) {
+			nameOfDay.nameOfDay(2016,9,20, function (err, name) {
 				expect(err).to.equal(null);
 				expect(name).to.equal('Tuesday');
 				done();

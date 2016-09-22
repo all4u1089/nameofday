@@ -1,8 +1,6 @@
-
 var daysInMonth = function (year, month, callback) {
 	if (isNaN(year)) {
-		var err = new Error('year must be a number');
-		return callback(err);
+		return callback(new Error('year must be a number'));
 	}
 	if (year < 0) {
 		var err = new Error('year must be positive');
@@ -49,7 +47,6 @@ var daysInMonth = function (year, month, callback) {
 	}
 	callback(null, days);
 }
-
 var nameOfDay = function (year, month, day, callback) {
 	if (isNaN(day)) {
 		var err = new Error('day must be a number');
@@ -59,17 +56,20 @@ var nameOfDay = function (year, month, day, callback) {
 		var err = new Error('day must be positive');
 		return callback(err);
 	}
-	/* LAM SAO DE GOI DUOC HAM daysInMonth? */
-	console.log("lam sao de goi duoc ham callback");
-	console.log(daysInMonth(year, month, callback));
-	if (day > daysInMonth(year, month, callback)) {
+	var days;
+	daysInMonth(year, month, function (err, s){
+		days = s;
+	}) 
+	if (day > days) {
 		var err = new Error('day must be lower than or equal to days of month');
 		return callback(err);
 	}	
 	//S = Year - 1 + ((Year - 1) / 4) - ((Year - 1) / 100) + ((Year - 1) / 400) + khoangNgay;
 	var khoangNgay = day;
 	for (var i = 1; i <= month-1; i++) {
-		khoangNgay +=daysInMonth(year, i);
+		daysInMonth(year, i, function (err, s){
+			khoangNgay +=s;
+		}) 
 	}
 	var s = year - 1 + Math.floor((year - 1) / 4) - Math.floor((year - 1) / 100) 
 		+ Math.floor((year - 1) / 400) + khoangNgay;
